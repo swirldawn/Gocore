@@ -1,4 +1,4 @@
-package models
+package gocore
 
 import (
 	"crypto/md5"
