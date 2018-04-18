@@ -26,7 +26,7 @@ func InitMysql() {
 }
 
 //插入
-func insert(sqlstr string, args ...interface{}) (int64, error) {
+func Insert(sqlstr string, args ...interface{}) (int64, error) {
 
 	stmtIns, err := DB.Prepare(sqlstr)
 
@@ -47,7 +47,7 @@ func insert(sqlstr string, args ...interface{}) (int64, error) {
 }
 
 //修改和删除
-func exec(sqlstr string, args ...interface{}) (int64, error) {
+func Exec(sqlstr string, args ...interface{}) (int64, error) {
 
 	stmtIns, err := DB.Prepare(sqlstr)
 
@@ -66,7 +66,7 @@ func exec(sqlstr string, args ...interface{}) (int64, error) {
 	return result.RowsAffected()
 }
 
-func fetchOne(sqlstr string, args ...interface{}) (string, error) {
+func FetchOne(sqlstr string, args ...interface{}) (string, error) {
 	stmtOut, err := DB.Prepare(sqlstr)
 
 	if err != nil {
@@ -118,7 +118,7 @@ func fetchOne(sqlstr string, args ...interface{}) (string, error) {
 }
 
 //取一行数据，注意这类取出来的结果都是string
-func fetchRow(sqlstr string, args ...interface{}) (map[string]string, error) {
+func FetchRow(sqlstr string, args ...interface{}) (map[string]string, error) {
 
 	stmtOut, err := DB.Prepare(sqlstr)
 
@@ -170,7 +170,7 @@ func fetchRow(sqlstr string, args ...interface{}) (map[string]string, error) {
 }
 
 //取多行，<span style="font-family: Arial, Helvetica, sans-serif;">注意这类取出来的结果都是string </span>
-func fetchAll(sqlstr string, args ...interface{}) ([]map[string]string, error) {
+func FetchAll(sqlstr string, args ...interface{}) ([]map[string]string, error) {
 
 	stmtOut, err := DB.Prepare(sqlstr)
 
