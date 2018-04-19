@@ -25,7 +25,7 @@ func String2Byte(stringSlice []string) []byte {
 	return []byte(stringByte)
 }
 
-func getPage(total string, size string, page string) map[string]interface{} {
+func GetPage(total string, size string, page string) map[string]interface{} {
 
 	newTotal, _ := strconv.Atoi(total)
 	newSize, _ := strconv.Atoi(size)
