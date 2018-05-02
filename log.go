@@ -33,7 +33,7 @@ func Info(log string) {
 }
 
 func PutFile(fileName string, content string) {
-	log = content + "\r\n"
+	log := content + "\r\n"
 	var f *os.File
 	var err1 error
 	fmt.Println(log)
