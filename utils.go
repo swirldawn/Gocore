@@ -4,9 +4,9 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"math"
+	"os"
 	"strconv"
 	"strings"
-	"os"
 )
 
 func Md5(share string) string {
@@ -105,19 +105,18 @@ func Paginator(page, prepage int, nums int64) map[string]interface{} {
  * 获取一个文件的md5值 路径为绝对路径
  */
 
-func FileMd5(file_dir string)value string {
-	
-	value = ""
-	
+func FileMd5(file_dir string) string {
+
+	value := ""
+
 	file, inerr := os.Open(testFile)
-	
-	  if inerr == nil {                                                           
-	           
-			md5h := md5.New()                                                   
-	        io.Copy(md5h, file)                                                 
-	               
-			value = hex.EncodeToString(md5h.Sum(nil)) // 输出加密结果                   
-	       }  
-		 
-		   
+
+	if inerr == nil {
+
+		md5h := md5.New()
+		io.Copy(md5h, file)
+
+		value = hex.EncodeToString(md5h.Sum(nil)) // 输出加密结果
+	}
+
 }
