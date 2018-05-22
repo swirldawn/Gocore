@@ -25,6 +25,51 @@ func InitMysql() {
 	}
 }
 
+func TablePaginator(table_name string,args map[string]string) (interface{}) {
+	
+	page:="1"
+	size:="10"
+	where:=""
+	orderby:=""
+	
+	if len(args) > 0 {
+		
+		for param,value := range args{
+			
+			switch param{
+				case "page":
+					page = value
+				case "size":
+					size = value
+				case "orderby":
+					orderby = value
+				default:
+					where = where +" and "+ param + "=" + value
+			}
+				
+		}
+	}
+	
+	sqlCount := "select count(*) as count from "+table_name+" where 1=1 " + where
+	
+	sql := "select * from " + table_name + " where 1=1 " + where+ " "+orderby+" limit ?,?"
+
+	count, _ := FetchOne(sqlCount)
+
+	results := GetPage(count, size, page)
+
+	offset, _ := results["offset"]
+	newSize, _ := results["per_page"]
+
+	list, _ := FetchAll(sql, offset, newSize)
+
+	results["data"] = list
+
+	return results
+
+	
+}
+
 //插入
 func Insert(sqlstr string, args ...interface{}) (int64, error) {
 

@@ -3,6 +3,7 @@ package gocore
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"io"
 	"math"
 	"os"
 	"strconv"
@@ -109,7 +110,7 @@ func FileMd5(file_dir string) string {
 
 	value := ""
 
-	file, inerr := os.Open(testFile)
+	file, inerr := os.Open(file_dir)
 
 	if inerr == nil {
 
@@ -117,6 +118,8 @@ func FileMd5(file_dir string) string {
 		io.Copy(md5h, file)
 
 		value = hex.EncodeToString(md5h.Sum(nil)) // 输出加密结果
+		file.Close()
 	}
 
+	return value
 }

@@ -32,3 +32,27 @@ func GetConfig(section string, option string) (value string) {
 	}
 	return value
 }
+
+func GetSection(section string) (value []string) {
+
+	conf := goconf.New()
+
+	if err := conf.Parse("./.env"); err != nil {
+		panic(err)
+	}
+
+	core := conf.Get(section)
+
+	for a := 0; a < 100; a++ {
+
+		val, err := core.String(strconv.Itoa(a))
+
+		if err != nil {
+			break
+		}
+
+		value = append(value, val)
+	}
+
+	return value
+}
