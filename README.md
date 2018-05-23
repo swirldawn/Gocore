@@ -12,6 +12,9 @@ github.com/go-sql-driver/mysql
 
 ## used
 ### config 
+
+
+```
 > cat .env
 [dev]
 PORT 8033
@@ -23,7 +26,6 @@ DB_DATABASE db_name
 DB_USERNAME root
 DB_PASSWORD root
 
-```
 import "github.com/swirldawn/gocore"
 
 	db_user := GetConfig("database", "DB_USERNAME")
@@ -48,11 +50,12 @@ import "github.com/swirldawn/gocore"
 	gocore.FetchOne("select name from user where id = 1") //string "root"
 	gocore.FetchRow("select * from user where id = 1") 
 	gocore.FetchAll("select * from user limit 10") 
-	
+	//获取分页数据
 	var params map[string]string /*创建集合 */
 	params = make(map[string]string)
 	params["page"] = "2"
 	params["size"] = "3"
+	params["id"] = ">= '3'"
 	params["orderby"] = "order by id desc"
 	
 	articles := gocore.TablePaginator("articles", params)
