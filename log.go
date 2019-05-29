@@ -1,7 +1,9 @@
 package gocore
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"time"
 )
@@ -54,6 +56,30 @@ func PutFile(fileName string, content string) {
 	}
 
 	f.Close()
+}
+
+func ReadFile(fileName string) []string {
+	f, err := os.Open(fileName)
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	var result []string
+
+	rd := bufio.NewReader(f)
+	for {
+		line, err := rd.ReadString('\n') //以'\n'为结束符读入一行
+
+		if err != nil || io.EOF == err {
+			break
+		}
+
+		result = append(result, line)
+	}
+
+	return result
 }
 
 func checkFileIsExist(filename string) bool {

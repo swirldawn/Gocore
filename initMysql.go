@@ -6,7 +6,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 )
-
 var DB *sql.DB
 
 func InitMysql() {
@@ -118,6 +117,8 @@ func FetchOne(sqlstr string, args ...interface{}) (string, error) {
 
 	return ret, nil
 }
+//表 插入 返回最后一个id
+
 
 //表 id查询
 func TableFind(table_name string,id string) (map[string]string){
