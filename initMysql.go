@@ -6,10 +6,11 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 )
+
 var DB *sql.DB
 
 func InitMysql() {
-
+	InitConfig()
 	db_user := GetConfig("database", "DB_USERNAME")
 	db_password := GetConfig("database", "DB_PASSWORD")
 	db_host := GetConfig("database", "DB_HOST")
@@ -23,7 +24,6 @@ func InitMysql() {
 		panic(err.Error())
 	}
 }
-
 
 //插入
 func Insert(sqlstr string, args ...interface{}) (int64, error) {
@@ -117,90 +117,88 @@ func FetchOne(sqlstr string, args ...interface{}) (string, error) {
 
 	return ret, nil
 }
+
 //表 插入 返回最后一个id
 
-
 //表 id查询
-func TableFind(table_name string,id string) (map[string]string){
-	
-	sql := "select * from "+table_name+" where id = ? limit 1"
-	
-	result,_ := FetchRow(sql, id)
+func TableFind(table_name string, id string) map[string]string {
+
+	sql := "select * from " + table_name + " where id = ? limit 1"
+
+	result, _ := FetchRow(sql, id)
 
 	return result
 
 }
 
 func TableFetchRow(table_name string, args map[string]string) (map[string]string, error) {
-	
+
 	where := ""
-	
+
 	if len(args) > 0 {
-		for param,value := range args{
-			
-			where = where +" and "+ param +  value
-				
+		for param, value := range args {
+
+			where = where + " and " + param + value
+
 		}
 	}
-	
+
 	sql := "select * from " + table_name + " where 1=1 " + where + " limit 1"
 
 	row, err := FetchRow(sql)
 
-	return row,err
-	
+	return row, err
+
 }
 
-func TableFetchAll(table_name string, args map[string]string) ([]map[string]string, error){
-	
+func TableFetchAll(table_name string, args map[string]string) ([]map[string]string, error) {
+
 	where := ""
 
 	if len(args) > 0 {
-		for param,value := range args{
-			
-			where = where +" and "+ param  + value
-				
+		for param, value := range args {
+
+			where = where + " and " + param + value
+
 		}
 	}
-	
+
 	sql := "select * from " + table_name + " where 1=1 " + where
 
 	list, err := FetchAll(sql)
 
-	return list,err
+	return list, err
 }
 
-
-
 //表 分页数据
-func TablePaginator(table_name string,args map[string]string) (interface{}) {
-	
-	page:="1"
-	size:="10"
-	where:=""
-	orderby:=""
-	
+func TablePaginator(table_name string, args map[string]string) interface{} {
+
+	page := "1"
+	size := "10"
+	where := ""
+	orderby := ""
+
 	if len(args) > 0 {
-		
-		for param,value := range args{
-			
-			switch param{
-				case "page":
-					page = value
-				case "size":
-					size = value
-				case "orderby":
-					orderby = value
-				default:
-					where = where +" and "+ param +value
+
+		for param, value := range args {
+
+			switch param {
+			case "page":
+				page = value
+			case "size":
+				size = value
+			case "orderby":
+				orderby = value
+			default:
+				where = where + " and " + param + value
 			}
-				
+
 		}
 	}
-	
-	sqlCount := "select count(*) as count from "+table_name+" where 1=1 " + where
-	
-	sql := "select * from " + table_name + " where 1=1 " + where+ " "+orderby+" limit ?,?"
+
+	sqlCount := "select count(*) as count from " + table_name + " where 1=1 " + where
+
+	sql := "select * from " + table_name + " where 1=1 " + where + " " + orderby + " limit ?,?"
 
 	count, _ := FetchOne(sqlCount)
 
@@ -215,10 +213,7 @@ func TablePaginator(table_name string,args map[string]string) (interface{}) {
 
 	return results
 
-	
 }
-
-
 
 //取一行数据，注意这类取出来的结果都是string
 func FetchRow(sqlstr string, args ...interface{}) (map[string]string, error) {

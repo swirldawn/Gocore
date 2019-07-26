@@ -2,8 +2,9 @@ package gocore
 
 import (
 	"fmt"
-	"time"
 	"strconv"
+	"time"
+
 	"github.com/Terry-Mao/goconf"
 )
 
@@ -17,12 +18,19 @@ type TestConfig struct {
 	M      map[int]string `goconf:"core:m:,"`
 }
 
-func GetConfig(section string, option string) (value string) {
-	conf := goconf.New()
+var conf *goconf.Config
+
+func InitConfig() {
+	conf = goconf.New()
 	if err := conf.Parse("./.env"); err != nil {
 		panic(err)
 	}
+}
+
+func GetConfig(section string, option string) (value string) {
+
 	core := conf.Get(section)
+
 	if core == nil {
 		fmt.Println("no core section")
 	}
@@ -34,12 +42,6 @@ func GetConfig(section string, option string) (value string) {
 }
 
 func GetSection(section string) (value []string) {
-
-	conf := goconf.New()
-
-	if err := conf.Parse("./.env"); err != nil {
-		panic(err)
-	}
 
 	core := conf.Get(section)
 
