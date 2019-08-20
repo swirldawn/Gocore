@@ -12,6 +12,15 @@ import (
 	"time"
 )
 
+func ReadText(filePth string) ([]byte, error) {
+	f, err := os.Open(filePth)
+	if err != nil {
+		return nil, err
+	}
+
+	return ioutil.ReadAll(f)
+}
+
 func PathExists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
